@@ -238,22 +238,21 @@ def train_and_save_all_models(X_train, y_train, preprocessor):
 
     print("✅ All models trained and saved.")
 
-if __name__=="__main__":
-    print("Reading Dataset File..")
+# if __name__=="__main__":
+#     print("Reading Dataset File..")
 
-    df = pd.read_csv("student-por.csv")
-
-
-    # Create binary target
-    print(df.columns)
-    df["pass"] = (df["G3"] >= 10).astype(int)
-    df = clean_student_dataset(df)
-
-    print("Converting Dataset TARGET")
+#     df = pd.read_csv("student-por.csv")
 
 
-    print(df["pass"].value_counts())
-    print(df.to_csv("test.csv"))
+#     # Create binary target
+#     print(df.columns)
+#     df["pass"] = (df["G3"] >= 10).astype(int)
+#     df = clean_student_dataset(df)
+
+#     print("Converting Dataset TARGET")
+
+
+#     print(df["pass"].value_counts())
 
 
 #     X = df[SELECTED_FEATURES]
@@ -269,67 +268,67 @@ if __name__=="__main__":
 #     test_and_save_all_models(X_test, y_test)
 
 
-# st.set_page_config(
-#     page_title="Student Performance Prediction",
-#     layout="wide"
-# )
+st.set_page_config(
+    page_title="Student Performance Prediction",
+    layout="wide"
+)
 
-# st.title("🎓 Student Performance Prediction App")
-# st.write("Upload test data and evaluate trained ML models.")
+st.title("🎓 Student Performance Prediction App")
+st.write("Upload test data and evaluate trained ML models.")
 
 
-# uploaded_file = st.file_uploader(
-#     "Upload Test Dataset (CSV)",
-#     type=["csv"]
-# )
+uploaded_file = st.file_uploader(
+    "Upload Test Dataset (CSV)",
+    type=["csv"]
+)
 
-# if uploaded_file is None:
-#     st.info("Please upload a CSV file to continue.")
-#     st.stop()
+if uploaded_file is None:
+    st.info("Please upload a CSV file to continue.")
+    st.stop()
 
-# df = pd.read_csv(uploaded_file)
+df = pd.read_csv(uploaded_file)
 
-# missing_cols = set(SELECTED_FEATURES + [TARGET]) - set(df.columns)
+missing_cols = set(SELECTED_FEATURES + [TARGET]) - set(df.columns)
 
-# if missing_cols:
-#     st.error(f"Missing columns: {missing_cols}")
-#     st.stop()
+if missing_cols:
+    st.error(f"Missing columns: {missing_cols}")
+    st.stop()
 
-# model_files = [
-#     f for f in os.listdir("saved_models") if f.endswith(".pkl")
-# ]
+model_files = [
+    f for f in os.listdir("saved_models") if f.endswith(".pkl")
+]
 
-# if not model_files:
-#     st.error("No saved models found in 'saved_models/' directory.")
-#     st.stop()
+if not model_files:
+    st.error("No saved models found in 'saved_models/' directory.")
+    st.stop()
 
-# model_name = st.selectbox(
-#     "Select a Model",
-#     model_files
-# )
+model_name = st.selectbox(
+    "Select a Model",
+    model_files
+)
 
-# model_path = os.path.join("saved_models", model_name)
-# model = joblib.load(model_path)
+model_path = os.path.join("saved_models", model_name)
+model = joblib.load(model_path)
 
-# X_test = df[SELECTED_FEATURES]
-# y_test = df[TARGET]
+X_test = df[SELECTED_FEATURES]
+y_test = df[TARGET]
 
-# metrics = evaluate_model(model, X_test, y_test)
+metrics = evaluate_model(model, X_test, y_test)
 
-# st.subheader("📈 Evaluation Metrics")
+st.subheader("📈 Evaluation Metrics")
 
-# col1, col2, col3 = st.columns(3)
+col1, col2, col3 = st.columns(3)
 
-# for i, (k, v) in enumerate(metrics.items()):
-#     [col1, col2, col3][i % 3].metric(k, f"{v:.4f}")
+for i, (k, v) in enumerate(metrics.items()):
+    [col1, col2, col3][i % 3].metric(k, f"{v:.4f}")
 
-# from sklearn.metrics import confusion_matrix, classification_report
+from sklearn.metrics import confusion_matrix, classification_report
 
-# y_pred = model.predict(X_test)
+y_pred = model.predict(X_test)
 
-# st.subheader("🧮 Confusion Matrix")
-# cm = confusion_matrix(y_test, y_pred)
-# st.write(cm)
+st.subheader("🧮 Confusion Matrix")
+cm = confusion_matrix(y_test, y_pred)
+st.write(cm)
 
-# st.subheader("📄 Classification Report")
-# st.text(classification_report(y_test, y_pred))
+st.subheader("📄 Classification Report")
+st.text(classification_report(y_test, y_pred))
