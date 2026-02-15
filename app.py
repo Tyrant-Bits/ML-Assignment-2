@@ -223,8 +223,7 @@ if __name__=="__main__":
     df = clean_student_dataset(df)
 
     print("Converting Dataset TARGET")
-    # Optional: drop grade columns to avoid leakage
-    df = df.drop(columns=["G1", "G2", "G3"])
+    
 
     print(df["pass"].value_counts())
 
