@@ -241,18 +241,18 @@ def train_and_save_all_models(X_train, y_train, preprocessor):
 # if __name__=="__main__":
 #     print("Reading Dataset File..")
 
-#     df = pd.read_csv("student-por.csv")
+    # df = pd.read_csv("student-por.csv")
 
 
-#     # Create binary target
-#     print(df.columns)
-#     df["pass"] = (df["G3"] >= 10).astype(int)
-#     df = clean_student_dataset(df)
+    # # Create binary target
+    # print(df.columns)
+    # df["pass"] = (df["G3"] >= 10).astype(int)
+    # df = clean_student_dataset(df)
 
-#     print("Converting Dataset TARGET")
+    # print("Converting Dataset TARGET")
 
 
-#     print(df["pass"].value_counts())
+    # print(df["pass"].value_counts())
 
 
 #     X = df[SELECTED_FEATURES]
@@ -287,7 +287,7 @@ if uploaded_file is None:
     st.stop()
 
 df = pd.read_csv(uploaded_file)
-
+df["pass"] = (df["G3"] >= 10).astype(int)
 missing_cols = set(SELECTED_FEATURES + [TARGET]) - set(df.columns)
 
 if missing_cols:
