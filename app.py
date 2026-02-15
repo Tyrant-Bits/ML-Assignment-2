@@ -187,9 +187,8 @@ if __name__=="__main__":
     df = pd.read_csv("student-por.csv")
 
 
-    df = pd.read_csv("student-por.csv", sep=";")
-
     # Create binary target
+    print(df.columns)
     df["pass"] = (df["G3"] >= 10).astype(int)
     print("Converting Dataset TARGET")
     # Optional: drop grade columns to avoid leakage
