@@ -184,6 +184,30 @@ def clean_student_dataset(df):
 
 
 
+def test_and_save_all_models(X_test, y_test):
+    results = []
+
+    for model_file in os.listdir("saved_models"):
+        if not model_file.endswith(".pkl"):
+            continue
+
+        model_name = model_file.replace(".pkl", "")
+        print(f"Testing {model_name}...")
+
+        model = joblib.load(f"saved_models/{model_file}")
+
+        # REUSE EXISTING FUNCTION
+        scores = evaluate_model(model, X_test, y_test)
+
+        scores["Model"] = model_name
+        results.append(scores)
+
+    results_df = pd.DataFrame(results)
+    results_df.to_csv("model_scores.csv", index=False)
+
+    print("✅ Model evaluation complete. Scores saved to model_scores.csv")
+
+
 
 
 
@@ -223,7 +247,7 @@ if __name__=="__main__":
     df = clean_student_dataset(df)
 
     print("Converting Dataset TARGET")
-    
+
 
     print(df["pass"].value_counts())
 
@@ -238,3 +262,4 @@ if __name__=="__main__":
 
     preprocessor = build_preprocessor(X)
     train_and_save_all_models(X_train, y_train, preprocessor)
+    test_and_save_all_models(X_test, y_test)
