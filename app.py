@@ -150,6 +150,36 @@ def train_xgboost(X_train, y_train, preprocessor):
     model.fit(X_train, y_train)
     return model
 
+def clean_student_dataset(df):
+    """
+    Cleans student-por dataset:
+    - Converts yes/no to 1/0
+    - Creates binary target from G3
+    - Drops grade leakage columns
+    """
+
+    # ----------------------------------
+    # YES/NO → 1/0 MAPPING
+    # ----------------------------------
+    yes_no_cols = [
+        "schoolsup", "famsup", "paid", "activities",
+        "higher", "internet", "romantic"
+    ]
+
+    for col in yes_no_cols:
+        df[col] = df[col].map({"yes": 1, "no": 0})
+
+    # ----------------------------------
+    # TARGET CREATION
+    # ----------------------------------
+    df["pass"] = (df["G3"] >= 10).astype(int)
+
+    # ----------------------------------
+    # DROP LEAKAGE COLUMNS
+    # ----------------------------------
+    df = df.drop(columns=["G1", "G2", "G3"])
+
+    return df
 
 
 
@@ -190,6 +220,8 @@ if __name__=="__main__":
     # Create binary target
     print(df.columns)
     df["pass"] = (df["G3"] >= 10).astype(int)
+    df = clean_student_dataset(df)
+
     print("Converting Dataset TARGET")
     # Optional: drop grade columns to avoid leakage
     df = df.drop(columns=["G1", "G2", "G3"])
