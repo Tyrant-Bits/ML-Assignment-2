@@ -199,7 +199,7 @@ if __name__=="__main__":
 
     X = df[SELECTED_FEATURES]
     y = df[TARGET]
-    print("SELECTED FEATURES",FEATURES)
+    print("SELECTED FEATURES",SELECTED_FEATURES)
     print("SELECTED TARGET,",TARGET)
     X_train, X_test, y_train, y_test = train_test_split(
     X, y, test_size=0.2, stratify=y, random_state=42
